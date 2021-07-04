@@ -1,0 +1,54 @@
+{
+  "name": "@moirei/complex-pricing",
+  "version": "1.0.0",
+  "description": "Ecommerce complex pricing package for the frontend and node.js.",
+  "homepage": "https://github.com/moirei/complex-pricing#readme",
+  "license": "MIT",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
+  "keywords": [
+    "moirei",
+    "ecommerce",
+    "pricing",
+    "volume",
+    "graduated",
+    "volume pricing",
+    "graduated pricing",
+    "typescript"
+  ],
+  "author": "Augustus Okoye <augustusokoye@moirei.com>",
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "prepublishOnly": "npm run test",
+    "prepare": "tsc -b tsconfig.json",
+    "lint": "eslint --ext js,ts src/*",
+    "test": "mocha -r ts-node/register test/*.test.ts"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moirei/complex-pricing.git"
+  },
+  "bugs": {
+    "url": "https://github.com/moirei/complex-pricing/issues"
+  },
+  "dependencies": {
+    "@types/expect": "^24.3.0",
+    "@types/lodash": "^4.14.161",
+    "@types/mocha": "^8.0.3",
+    "chai": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.17.4",
+    "@typescript-eslint/eslint-plugin": "^4.2.0",
+    "@typescript-eslint/parser": "^4.2.0",
+    "eslint": "^7.9.0",
+    "mocha": "^8.1.3",
+    "ts-node": "^9.0.0",
+    "typescript": "^4.0.2"
+  }
+}
