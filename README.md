@@ -92,11 +92,11 @@ Use `volume` pricing to apply charges based on tier of the `quantity`. For examp
 const tiers = [
     {
         max: 5,
-        unit_amount: => 3,
+        unit_amount: 3,
     },
     {
         max: 10,
-        unit_amount: => 2,
+        unit_amount: 2,
     },
     {
         max: 'infinity',
@@ -126,17 +126,17 @@ Use `graduated` pricing to progressively calculate a charge based on all applica
 const tiers = [
     {
         max: 5,
-        unit_amount: => 4,
+        unit_amount: 4,
     },
     {
         max: 10,
-        unit_amount: => 3,
-        flat_amount: => 0.1,
+        unit_amount: 3,
+        flat_amount: 0.1,
     },
     {
         max: 15,
-        unit_amount: => 2,
-        flat_amount: => 0.2,
+        unit_amount: 2,
+        flat_amount: 0.2,
     },
     {
         max: 'infinity',
