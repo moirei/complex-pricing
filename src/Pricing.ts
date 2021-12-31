@@ -1,6 +1,6 @@
 import PriceCalculator from "./PriceCalculator";
 import { ModelType, PriceTier, PricingData } from "./types";
-import { data_get, data_set } from "./utils";
+import { data_get, data_set, isNil, error } from "./utils";
 
 export default class Pricing {
   public static MODEL_STANDARD: ModelType = "standard";
@@ -86,8 +86,10 @@ export default class Pricing {
       Pricing.MODEL_GRADUATED,
     ];
 
+    model = model.toLowerCase() as ModelType;
+
     if (!types.includes(model)) {
-      throw new Error("Invalid pricing model '$model'.");
+      error(`Invalid pricing model '${model}'.`);
     }
 
     this.$model = model;
@@ -132,8 +134,7 @@ export default class Pricing {
   public unitAmount(): number | undefined;
   public unitAmount(unit_amount: number): Pricing;
   public unitAmount(unit_amount?: number): Pricing | number | undefined {
-    if (!unit_amount) return this.$unit_amount;
-
+    if (isNil(unit_amount) || unit_amount < 0) return this.$unit_amount;
     this.$unit_amount = unit_amount;
 
     return this;
@@ -148,7 +149,7 @@ export default class Pricing {
   public units(): number | undefined;
   public units(units: number): Pricing;
   public units(units?: number): Pricing | number | undefined {
-    if (!units) return this.$units;
+    if (isNil(units) || units <= 0) return this.$units;
     this.$units = units;
 
     return this;
@@ -253,6 +254,33 @@ export default class Pricing {
     }
 
     return data_get(this.$data, key);
+  }
+
+  /**
+   * Check if the Pricing is valid
+   * @returns {boolean}
+   */
+  public isValid(): boolean {
+    const validAmount = !isNil(this.$unit_amount) && this.$unit_amount >= 0;
+    if (this.$model === Pricing.MODEL_STANDARD && validAmount) {
+      return true;
+    } else if (
+      this.$model === Pricing.MODEL_PACKAGE &&
+      validAmount &&
+      !isNil(this.$units) &&
+      this.$units > 0
+    ) {
+      return true;
+    } else if (this.$tiers && this.$tiers.length) {
+      for (const tier of this.$tiers) {
+        if (isNil(tier.unit_amount) || tier.unit_amount < 0) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    return false;
   }
 
   /**

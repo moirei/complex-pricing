@@ -14,9 +14,10 @@ export function data_get(data: any, keys: string | string[], def?: any): any {
   if (!data) return def;
   keys = typeof keys === "string" ? keys.split(".") : keys;
   const key = keys.shift();
-  if (data.hasOwnProperty(key) && keys.length === 0)
-    return key ? data[key] : def;
-  else if (!data.hasOwnProperty(key)) return def;
+  if (data.hasOwnProperty(key) && keys.length === 0) {
+    if (key && !isNil(data[key])) return data[key];
+    return def;
+  } else if (!data.hasOwnProperty(key)) return def;
   else return key ? data_get(data[key], keys) : def;
 }
 
@@ -43,4 +44,24 @@ export function data_set(
   }
 
   data_set(data[key], keys, value);
+}
+
+/**
+ * Checks if `value` is `null` or `undefined`.
+ *
+ * @param {any} value
+ * @returns {boolean}
+ */
+export function isNil(value: any): value is null | undefined {
+  if (value === undefined) return true;
+  if (value === null) return true;
+  return false;
+}
+
+/**
+ * @throws {Error}
+ * @param {string} message
+ */
+export function error(message: string): never {
+  throw new Error("[Complex Pricing] " + message);
 }

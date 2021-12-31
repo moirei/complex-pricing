@@ -7,10 +7,10 @@
 
 export type Infinity = -1 | "inf" | "infinity";
 
-export type STANDARD = "standard";
-export type PACKAGE = "package";
-export type VOLUME = "volume";
-export type GRADUATED = "graduated";
+export type STANDARD = "standard" | "STANDARD";
+export type PACKAGE = "package" | "PACKAGE";
+export type VOLUME = "volume" | "VOLUME";
+export type GRADUATED = "graduated" | "GRADUATED";
 
 export type ModelType = STANDARD | PACKAGE | VOLUME | GRADUATED;
 

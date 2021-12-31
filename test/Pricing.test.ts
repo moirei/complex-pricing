@@ -5,19 +5,20 @@
  * @copyright MOIREI - Augustus Okoye<augustusokoye@moirei.com>
  */
 
-import Pricing, { PriceCalculator } from "../src";
-import { PriceTier } from "../src/types";
-// @ts-ignore
-const { expect } = require("chai");
+import Pricing from "../src";
+import { PriceTier, STANDARD } from "../src/types";
+import { expect } from "chai";
 
 const tiers: PriceTier[] = [
   {
     max: 5,
     unit_amount: 5,
+    flat_amount: undefined,
   },
   {
     max: 10,
     unit_amount: 4,
+    flat_amount: undefined,
   },
   {
     max: 15,
@@ -83,6 +84,49 @@ describe("Pricing", async () => {
 
     expect(25.0).to.equal(pricing.price(4));
     expect(50.0).to.equal(pricing.price(8));
+  });
+
+  it("should be model name case-insensitive", async () => {
+    const pricing = Pricing.make({
+      model: "STANDARd" as STANDARD,
+      unit_amount: 25,
+    });
+    expect(pricing.model()).to.equal("standard");
+  });
+});
+
+describe("Validity", async () => {
+  it("should have valid standard pricing", async () => {
+    const pricing = Pricing.make({
+      model: "standard",
+      unit_amount: 0,
+    });
+    expect(pricing.isValid()).to.equal(true);
+  });
+  it("should have valid package pricing", async () => {
+    const pricing = Pricing.make({
+      model: "package",
+      unit_amount: 10,
+      units: undefined,
+    });
+    expect(pricing.isValid()).to.equal(true);
+  });
+  it("should have invalid volume pricing", async () => {
+    const pricing = Pricing.make({
+      model: "volume",
+      tiers: [
+        {
+          max: 5,
+          unit_amount: undefined,
+          flat_amount: undefined,
+        },
+        {
+          max: "infinity",
+          unit_amount: 1,
+        },
+      ],
+    });
+    expect(pricing.isValid()).to.equal(false);
   });
 });
 
